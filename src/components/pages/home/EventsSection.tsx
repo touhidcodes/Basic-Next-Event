@@ -14,7 +14,7 @@ export const EventsSection = () => {
         Upcoming Events
       </h2>
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {eventsData.map((event: TEvent) => (
+        {eventsData.slice(0, 3).map((event: TEvent) => (
           <div
             key={event.id}
             className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 relative"
