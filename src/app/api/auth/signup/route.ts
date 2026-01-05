@@ -9,9 +9,9 @@ if (!JWT_SECRET) throw new Error("Please add JWT_SECRET in .env");
 export async function POST(req: Request) {
   try {
     const { client, db } = await mongoConnect();
-    const { name, email, password } = await req.json();
+    const { username, email, password } = await req.json();
 
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       //   client.close();
       return NextResponse.json(
         { error: "All fields are required" },
@@ -34,9 +34,10 @@ export async function POST(req: Request) {
 
     // create user
     const result = await db.collection("users").insertOne({
-      name,
+      username,
       email,
       password: hashedPassword,
+      role: "user",
       createdAt: new Date(),
     });
 

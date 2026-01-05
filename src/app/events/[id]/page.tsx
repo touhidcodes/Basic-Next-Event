@@ -4,19 +4,37 @@ import { Button } from "@/components/ui/button";
 import { TEvent } from "@/types/event";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, useParams } from "next/navigation";
-import { eventsData } from "../../../../data/eventsData";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function EventDetailsPage() {
   const params = useParams();
   const eventId = params?.id as string;
-  const event: TEvent | undefined = eventsData.find(
-    (item) => item.id === eventId
-  );
+  const [event, setEvent] = useState<TEvent | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!event) {
-    notFound();
-  }
+  useEffect(() => {
+    if (!eventId) return;
+
+    async function fetchEvent() {
+      try {
+        const res = await fetch(`/api/events/${eventId}`);
+        if (!res.ok) throw new Error("Event not found");
+        const data = await res.json();
+        setEvent(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchEvent();
+  }, [eventId]);
+
+  if (loading)
+    return <p className="text-center mt-10">Loading event details...</p>;
+  if (!event) return <p className="text-center mt-10">Event not found</p>;
 
   return (
     <section className="container mx-auto px-4 py-16">
