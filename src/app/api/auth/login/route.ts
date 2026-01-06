@@ -59,6 +59,17 @@ export async function POST(req: Request) {
 
     // client.close()
 
+    // Set cookie options
+    res.cookies.set({
+      name: "token",
+      value: token,
+      httpOnly: true, // cannot be accessed by JS
+      path: "/", // cookie valid for all routes
+      maxAge: 60 * 60 * 24, // 1 day in seconds
+      sameSite: "strict", // security
+      secure: process.env.NODE_ENV === "production",
+    });
+
     return res;
   } catch (error) {
     console.error(error);

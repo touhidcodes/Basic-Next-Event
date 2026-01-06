@@ -23,8 +23,13 @@ const data = {
       url: "#",
       items: [
         {
+          title: "Home",
+          url: "/",
+        },
+        {
           title: "Overview",
           url: "overview",
+          isActive: true,
         },
       ],
     },
@@ -35,7 +40,6 @@ const data = {
         {
           title: "All Events",
           url: "all-events",
-          isActive: true,
         },
         {
           title: "Create Event",

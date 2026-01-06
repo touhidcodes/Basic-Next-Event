@@ -1,10 +1,9 @@
-import { getToken } from "@/lib/token";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function proxy(req: NextRequest) {
-  const token = getToken();
-
+  const token = req.cookies.get("token");
+  console.log(token);
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
@@ -12,7 +11,7 @@ export function proxy(req: NextRequest) {
   return NextResponse.next();
 }
 
-// Protect dashboard routes
+// Apply to all paths
 export const config = {
   matcher: ["/dashboard/:path*"],
 };
