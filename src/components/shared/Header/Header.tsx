@@ -8,31 +8,29 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useAuth } from "@/hooks/useAuth";
+import { getAuthUser } from "@/service/getAuthUser";
 import { logout } from "@/service/logout";
 import { Calendar, Menu } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export const Header = () => {
+export default async function Header() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  // if using localStorage
+  // const { isAuthenticated } = useAuth();
 
-  const user = {
-    name: "Touhid",
-    email: "user@gmail.com",
-  };
+  //if using cookies
+  const user = await getAuthUser();
+
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const menuItems = [
     { title: "Home", url: "/" },
     { title: "Events", url: "/events" },
     { title: "About", url: "/about" },
-    ...(isAuthenticated
-      ? [{ title: "Dashboard", url: "/dashboard/overview" }]
-      : []),
-    ...(isAuthenticated
+    ...(user ? [{ title: "Dashboard", url: "/dashboard/overview" }] : []),
+    ...(user
       ? [{ title: "Create Event", url: "/dashboard/create-event" }]
       : []),
   ];
@@ -75,9 +73,9 @@ export const Header = () => {
 
         {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-3">
-          {isAuthenticated ? (
+          {user ? (
             <>
-              <div className="text-sm text-muted-foreground">{user.name}</div>
+              <div className="text-sm text-muted-foreground">{user.email}</div>
               <Button onClick={handleLogoutClick} size="sm">
                 Logout
               </Button>
@@ -129,11 +127,11 @@ export const Header = () => {
 
               {/* Mobile Auth Buttons */}
               <div className="flex flex-col gap-2 pt-4 border-t">
-                {isAuthenticated ? (
+                {user ? (
                   <>
                     <div className="px-3 py-2 text-sm text-muted-foreground">
                       <div className="font-medium text-foreground">
-                        {user.name}
+                        {user.email}
                       </div>
                       <div className="text-xs">{user.email}</div>
                     </div>
@@ -169,4 +167,4 @@ export const Header = () => {
       </div>
     </header>
   );
-};
+}

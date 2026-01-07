@@ -1,3 +1,5 @@
+// If using localStorage instead of cookies
+
 "use client";
 
 import { getToken, removeToken } from "@/lib/token";
