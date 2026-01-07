@@ -1,7 +1,7 @@
 "use client";
 
-import { DeleteEventModal } from "@/components/designs/DeleteEventModal";
-import { UpdateEventModal } from "@/components/designs/UpdateEventModal";
+import { DeleteEventModal } from "@/components/modals/DeleteEventModal";
+import { UpdateEventModal } from "@/components/modals/UpdateEventModal";
 import { Button } from "@/components/ui/button";
 import {
   Card,
